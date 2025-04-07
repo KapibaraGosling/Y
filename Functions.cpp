@@ -4,7 +4,7 @@ bool OnSameLine(const Point& p1, const Point& p2, const Point& p3) {
     int area =  p1.getX() * (p2.getY() - p3.getY()) +
                 p2.getX() * (p3.getY() - p1.getY()) +
                 p3.getX() * (p1.getY() - p2.getY());
-    // Если площадь равна нулю, точки лежат на одной прямой
+    // Р•СЃР»Рё РїР»РѕС‰Р°РґСЊ СЂР°РІРЅР° РЅСѓР»СЋ, С‚РѕС‡РєРё Р»РµР¶Р°С‚ РЅР° РѕРґРЅРѕР№ РїСЂСЏРјРѕР№
     return area == 0;
 }
 

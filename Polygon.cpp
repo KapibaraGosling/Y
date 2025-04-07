@@ -1,4 +1,4 @@
-﻿// Polygon methods 
+// Polygon methods 
 
 #include "Point.h"
 
@@ -16,12 +16,12 @@ Polygon::Polygon(const Point* points, const int number) :
 
 number{ number }, point{ points }
 {
-	for (int i = 1; i < number; i++) {
+	for (size_t i = 1; i < number; i++) {
 		if (point[i] == point[i-1])
 			throw std::logic_error("The points match");
 	}
 
-	for (int i = 2; i < number; i++) {
+	for (size_t i = 2; i < number; i++) {
 		if (OnSameLine(points[i], points[i-1], points[i-2])) {
 			throw std::logic_error("Three points lie on the same straight line");
 		}
@@ -32,7 +32,7 @@ number{ number }, point{ points }
 Polygon::Polygon(const int* x, const int* y, const int number)
 {
 	Point* points = new Point[number];
-	for (int i = 0; i < number; i++) {
+	for (size_t i = 0; i < number; i++) {
 		points[i] = Point(x[i], y[i]);
 	}
 
@@ -53,7 +53,7 @@ Polygon::~Polygon() {
 
 
 void Polygon::ToString() {
-	for (int i=0; i < this->number; i++) {
+	for (size_t i=0; i < this->number; i++) {
 		cout << "vertex  " << i << ": " << &this->point[i] << std::endl;
 	}
 }

@@ -1,4 +1,4 @@
-﻿#include "Functions.h"
+#include "Functions.h"
 #include "Polygon.h"
 #include "Point.h"
 enum CreatingPolygon
@@ -22,7 +22,7 @@ int main()
 	{
 	case CreatingPolygon::ByPoint:
 		points = new Point[number];
-		for (int i = 0; i < number; i++) {
+		for (size_t i = 0; i < number; i++) {
 			cin >> points[i];
 		}
 		P = Polygon(points, number);
@@ -31,11 +31,11 @@ int main()
 
 	case CreatingPolygon::ByCoordinates:
 		x = new int[number];
-		for (int i = 0; i < number; i++) { 
+		for (size_t i = 0; i < number; i++) { 
 			cin >> x[i];
 		}
 		y = new int[number];
-		for (int i = 0; i < number; i++) {
+		for (size_t i = 0; i < number; i++) {
 			cin >> y[i];
 		}
 		P = Polygon(x,y, number);
