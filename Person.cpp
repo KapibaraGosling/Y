@@ -1,25 +1,16 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include"Person.h"
 using namespace std;
 
-class Person
-{
-public:
-	Person();
-	Person(const string ln, const string fn, const string pn);
-	void Show();
-	void ShowFormal();
-	~Person();
 
-private:
-	string lastname;
-	string firstname;
-	string patronomyc;
-};
 
 Person::Person()
 {
+	lastname = "";
+    firstname = "";
+    patronomyc = "";
 }
 Person::Person(const string ln, const string fn, const string pn)
 {
@@ -37,8 +28,4 @@ void Person::ShowFormal()
 	cout <<left << setw(15) << "Surname: " << lastname << endl
 		<< setw(15) << "Name: " << firstname << endl
 		<< setw(15) << "Patronomyc: " << patronomyc << endl;
-}
-
-Person::~Person()
-{
 }
