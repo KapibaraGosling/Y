@@ -50,5 +50,4 @@ int main()
 	delete[]x;
 	delete[]y;
 	P.ToString();
-	return 0;
 }
