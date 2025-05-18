@@ -1,53 +1,54 @@
-#include "Functions.h"
-#include "Polygon.h"
-#include "Point.h"
-enum CreatingPolygon
-{
-	ByPoint = 1,
-	ByCoordinates
-};
-int main()
-{
-	cout << "Enter the number of vertices ";
-    int number = inputInt();
-	if(number <=0) throw std::invalid_argument("Numbers of vertex must be more then zero");
-    Polygon P;
-	cout << "\nEnter the command number\n" << \
-		CreatingPolygon::ByPoint << " - Creating a polygon based on points\n" << \
-		CreatingPolygon::ByCoordinates << " - Creating a polygon using vertex coordinates\n";
-	Point* points = nullptr;
-	int* x = nullptr, *y = nullptr;
-	int choice = inputInt();
-	switch (choice)
-	{
-	case CreatingPolygon::ByPoint:
-		points = new Point[number];
-		for (size_t i = 0; i < number; i++) {
-			cin >> points[i];
-		}
-		P = Polygon(points, number);
-		
-		break;
+﻿#include <iostream>
+#include "Dequeue.hpp" 
+using namespace std;
+#include "DequeTests.h"
+int main() {
 
-	case CreatingPolygon::ByCoordinates:
-		x = new int[number];
-		for (size_t i = 0; i < number; i++) { 
-			cin >> x[i];
-		}
-		y = new int[number];
-		for (size_t i = 0; i < number; i++) {
-			cin >> y[i];
-		}
-		P = Polygon(x,y, number);
+    test_constructors();
+    test_push_pop();
+    test_inout_operators();
+    test_copy_move();
+    test_edge_cases();
 
-		
-		break;
-	default:
-		throw std::invalid_argument("Entered wrong command");
-		break;
-	}
-	delete[] points;
-	delete[]x;
-	delete[]y;
-	P.ToString();
+    cout << "All tests passed successfully!\n";
+
+
+
+    setlocale(LC_ALL, "rus");
+    Deque<int> dq1, dq2 = { 10, 20, 30 }, dq3(5);
+
+    dq1.push_back(1);
+    dq1.push_front(0);
+    dq1.push_back(2);
+
+    cout << "dq1: " << dq1 << "\n";
+
+    cout << "Первый элемент: " << dq1.front() << "\n";
+    cout << "Последний элемент: " << dq1.back() << "\n";
+
+    dq1.pop_front();
+    dq1.pop_back();
+    cout << "После удаления: " << dq1 << "\n";
+
+    Deque<int> dq4 = dq2; // Копирование 
+    Deque<int> dq5 = move(dq3); // Перемещение (оставит dq3 пустым)
+
+    cout << "Размер dq4: " << dq4.size() << "\n";
+    cout << "Пуст ли dq5? " << (dq5.empty() ? "Да" : "Нет") << "\n";
+
+    cout << "Введите элементы дека: ";
+    Deque<int> dq6;
+    cin >> dq6;
+    cout << "Вы ввели: " << dq6 << "\n";
+
+
+    // Проверка на исключения
+    try {
+        cout << dq6.front(); // Попытка доступа к пустому деку
+    }
+    catch (const std::out_of_range& e) {
+        cerr << "Ошибка: " << e.what() << "\n";
+    }
+
+    return 0;
 }
