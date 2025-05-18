@@ -1,59 +1,61 @@
 // Polygon methods 
 
-#include "Point.h"
+
 
 #include "Polygon.h"
-
-#include "Functions.h"
-
+#include <algorithm>
+#include <stdexcept>
 
 Polygon::Polygon() {
-	number = 0;
-	point = nullptr;
+    points = {};
 }
 
-Polygon::Polygon(const Point* points, const int number) :
 
-number{ number }, point{ points }
-{
-	for (size_t i = 1; i < number; i++) {
-		if (point[i] == point[i-1])
-			throw std::logic_error("The points match");
-	}
+Polygon::Polygon(const Point* points, const size_t number) {
+    if (number > 0 && points == nullptr) throw std::invalid_argument("Null pointer passed");
 
-	for (size_t i = 2; i < number; i++) {
-		if (OnSameLine(points[i], points[i-1], points[i-2])) {
-			throw std::logic_error("Three points lie on the same straight line");
-		}
-	}
+    this->points.assign(points, points + number);
+    validatePointsCheck();
 }
-
 	
-Polygon::Polygon(const int* x, const int* y, const int number)
-{
-	Point* points = new Point[number];
-	for (size_t i = 0; i < number; i++) {
-		points[i] = Point(x[i], y[i]);
-	}
+Polygon::Polygon(const int* x, const int* y, const size_t number) {
+   
+    if (number > 0 && (x == nullptr || y == nullptr)) {
+        throw std::invalid_argument("Null pointer passed");
+    }
 
-	*this = Polygon(points, number);
+    this->points.reserve(number);
+    for (size_t i = 0; i < number; ++i) {
+        points.emplace_back(x[i], y[i]);
+    }
 
-	delete[] points;
-}
-
-Point Polygon::getPoint(const int sequence_number) const {
-	if (sequence_number < 0 || sequence_number >= number) {
-		throw std::out_of_range("Invalid sequence number");
-	}
-	return point[sequence_number];
-}
-Polygon::~Polygon() {
-	delete[] point; 
+    validatePointsCheck();
 }
 
 
-void Polygon::ToString() {
-	for (size_t i=0; i < this->number; i++) {
-		cout << "vertex  " << i << ": " << &this->point[i] << std::endl;
-	}
+Point Polygon::getPoint(int sequence_number) const {
+    if (sequence_number < 0 || static_cast<size_t>(sequence_number) >= points.size()) {
+        throw std::out_of_range("Invalid point index");
+    }
+    return points[sequence_number];
+}
+void Polygon::validatePointsCheck() const {
+    for (size_t i = 1; i < points.size(); ++i) {
+        if (points[i] == points[i - 1]) {
+            throw std::logic_error("The points match");
+        }
+    }
+
+    for (size_t i = 2; i < points.size(); ++i) {
+        if (points[i].isCollinearWith( points[i - 1], points[i - 2])) {
+            throw std::logic_error("Three points lie on the same straight line");
+        }
+    }
+
+}
+
+void Polygon::ToString() const {
+    for (size_t i = 0; i < points.size(); ++i) {
+        std::cout << "vertex " << i+1 << ": " << points[i] << "\n";
+    }
 }
