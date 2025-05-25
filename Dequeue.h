@@ -1,4 +1,4 @@
-﻿#include <stdexcept>
+#include <stdexcept>
 #include <utility>
 #include <string>
 #include <sstream>
