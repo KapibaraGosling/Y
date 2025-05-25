@@ -1,21 +1,14 @@
 ﻿#include <iostream>
-#include "Dequeue.hpp" 
+#include "../DequeLibrary/Dequeue.h"
 using namespace std;
-#include "DequeTests.h"
 int main() {
-
-    test_constructors();
-    test_push_pop();
-    test_inout_operators();
-    test_copy_move();
-    test_edge_cases();
-
-    cout << "All tests passed successfully!\n";
+    
+    
 
 
 
     setlocale(LC_ALL, "rus");
-    Deque<int> dq1, dq2 = { 10, 20, 30 }, dq3(5);
+    Deque<int> dq1, dq2 = { 10, 20, 30 };
 
     dq1.push_back(1);
     dq1.push_front(0);
@@ -31,7 +24,7 @@ int main() {
     cout << "После удаления: " << dq1 << "\n";
 
     Deque<int> dq4 = dq2; // Копирование 
-    Deque<int> dq5 = move(dq3); // Перемещение (оставит dq3 пустым)
+    Deque<int> dq5 = move(dq2); // Перемещение (оставит dqw пустым)
 
     cout << "Размер dq4: " << dq4.size() << "\n";
     cout << "Пуст ли dq5? " << (dq5.empty() ? "Да" : "Нет") << "\n";
