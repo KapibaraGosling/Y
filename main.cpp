@@ -1,12 +1,13 @@
-#include "Polygon.h"
+﻿#include "Polygon.h"
 #include "Point.h"
-#include "Tests.h"
+#include <vector>
+#include <iostream>
 using namespace std;
-int  inputInt(void)
+int  inputPositiveInt(void)
 {
 	int number = 0.0;
 	cin >> number;
-	if (cin.fail())
+	if (cin.fail()||number<0)
 	{
 		throw invalid_argument("Incorrect value entered");
 	}
@@ -18,50 +19,54 @@ enum CreatingPolygon
 	ByPoint = 1,
 	ByCoordinates
 };
+
 int main()
 {
-	run_all_tests();
-	cout << "\n\n";////////////////
+	const unsigned int screenWidth = 1920;
+	const unsigned int screenHeight = 1080;
+
 	cout << "Enter the number of vertices ";
-    int number = inputInt();
-	if(number <=0) throw invalid_argument("Numbers of vertex must be more then zero");
+	int vertexNumber = inputPositiveInt();
+	if (vertexNumber < 3) throw invalid_argument("Polygon must have at least 3 vertices");
+
 	cout << "\nEnter the command number\n" << \
 		CreatingPolygon::ByPoint << " - Creating a polygon based on points\n" << \
 		CreatingPolygon::ByCoordinates << " - Creating a polygon using vertex coordinates\n";
-	int choice=inputInt();
-	Polygon P;
+	int choice= inputPositiveInt();
+
+	Polygon P(screenWidth, screenHeight);
 	switch (choice)
 	{
 	case CreatingPolygon::ByPoint: {
+
+
+		cout << "Enter " << vertexNumber << " points:\n";
 		vector<Point> points;
-		points.reserve(number);
-		cout << "Enter " << number << " points (x y format):\n";
-		for (int i = 0; i < number; ++i) {
-			Point pt;
-			cin >> pt;
-			points.push_back(pt);
+		points.reserve(vertexNumber);
+
+		for (int i = 0; i < vertexNumber; ++i) {
+			unsigned x = inputPositiveInt();
+			unsigned y = inputPositiveInt();
+			points.emplace_back(x, y);
 		}
-		P = Polygon(points.data(), points.size());
+		Polygon(initializer_list<Point>(points.data(), points.data() + points.size()), screenWidth, screenHeight);
 		break;
 	}
 
 	case CreatingPolygon::ByCoordinates: {
-		vector<int> x(number), y(number);
-		cout << "Enter " << number << " x-coordinates:\n";
-		for (int i = 0; i < number; ++i) {
-			x[i] = inputInt();
+		vector<pair<int, int>> coords;
+		coords.reserve(vertexNumber);
+		for (size_t i = 0; i < vertexNumber; ++i) {
+			int x = inputPositiveInt();
+			int y = inputPositiveInt();
+			coords.emplace_back(x, y);
 		}
-
-		cout << "Enter " << number << " y-coordinates:\n";
-		for (int i = 0; i < number; ++i) {
-			y[i] = inputInt();
-		}
-		P = Polygon(x.data(), y.data(), number);
+		Polygon(initializer_list<pair<int, int>>(coords.data(), coords.data() + coords.size()), screenWidth, screenHeight);
 		break;
 	}
 	default:
-		throw std::invalid_argument("Entered wrong command");
+		throw invalid_argument("Entered wrong command");
 	}
-	P.ToString();
+	P.draw();
 	return 0;
 }

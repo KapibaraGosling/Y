@@ -1,4 +1,5 @@
 ﻿#include "Point.h"
+#include <limits>
 bool operator==(const Point& point1, const Point& point2)
 {
     return point1.getX() == point2.getX() && point1.getY() == point2.getY();
@@ -16,45 +17,53 @@ Point& Point::operator=(const Point& other) {
     }
     return *this;
 }
-Point Point::operator+(const Point& other) const {
-    return Point(this->x + other.x, this->y + other.y);
-}
-Point Point::operator-(const Point& other) const {
-    return Point(this->x - other.x, this->y - other.y);
-}
 
-std::istream& operator>>(std::istream &cinP, Point& point) {
-    cinP >> point.x >> point.y;
-    if (cinP.fail())
-    {
-        throw std::invalid_argument("Incorrect value entered");
-    }
-    return cinP;
-}
 
 bool Point::isCollinearWith(const Point& p2, const Point& p3) const {
     double area = (double)(this->x) * (p2.y - p3.y) +
         (double)(p2.x) * (p3.y - this->y) +
         (double)(p3.x) * (this->y - p2.y);
 
-    // Проверка с учётом погрешности вычислений
     return std::abs(area) < std::numeric_limits<double>::epsilon();
 }
+
+std::istream& operator>>(std::istream& is, Point& point) {
+    int tempX, tempY;  // Временные переменные для проверки отрицательных значений
+    is >> tempX >> tempY;
+
+    if (is.fail() || tempX < 0 || tempY < 0) {\
+        throw std::invalid_argument("Coordinates must be unsigned integers");
+    }
+
+    point.x = static_cast<unsigned int>(tempX);
+    point.y = static_cast<unsigned int>(tempY);
+    return is;
+}
+
+
 std::ostream& operator<<(std::ostream &coutP, const Point& point) {
     coutP << "(" << point.x << "; " << point.y << ")\n";
     return coutP;
 }
 
 
-Point::Point(const int x, const int y) :
-    x{ x }, y{ y }{}
+Point::Point(unsigned int x, unsigned int y) : x(x), y(y) {}
 
-int Point::getX() const
-{
+unsigned int Point::getX() const {
     return x;
 }
 
-int Point::getY() const
-{
+unsigned int Point::getY() const {
     return y;
+}
+
+Point Point::operator+(int value) const {
+    return Point(x + value, y + value);
+}
+
+Point Point::operator-(int value) const {
+    if (value > x || value > y) {
+        throw std::out_of_range("Subtraction would result in negative coordinates");
+    }
+    return Point(x - value, y - value);
 }

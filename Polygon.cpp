@@ -1,34 +1,56 @@
-// Polygon methods 
-
-
-
-#include "Polygon.h"
+﻿#include "Polygon.h"
 #include <algorithm>
 #include <stdexcept>
+#include <sstream>
+Polygon::Polygon(unsigned int width, unsigned int height)
+    : screenWidth(width), screenHeight(height), points({}) {
+}
 
-Polygon::Polygon() {
-    points = {};
+Polygon::Polygon(const Polygon& other)
+    : screenWidth(other.screenWidth),
+    screenHeight(other.screenHeight),
+    points(other.points) {
+}
+
+Polygon::Polygon(Polygon&& other) noexcept
+    : screenWidth(other.screenWidth),
+    screenHeight(other.screenHeight),
+    points(std::move(other.points)) {
+}
+
+Polygon& Polygon::operator=(const Polygon& other) {
+    if (this != &other) {                
+        points = other.points;
+    }
+    return *this;                        
+}
+
+Polygon& Polygon::operator=(Polygon&& other) noexcept {
+    if (this != &other) {
+        points = std::move(other.points);
+    }
+    return *this;
 }
 
 
-Polygon::Polygon(const Point* points, const size_t number) {
-    if (number > 0 && points == nullptr) throw std::invalid_argument("Null pointer passed");
+Polygon::Polygon(std::initializer_list<Point> points_list,
+    unsigned int screen_width,
+    unsigned int screen_height)
+    : screenWidth(screen_width), screenHeight(screen_height),
+    points(points_list) {
 
-    this->points.assign(points, points + number);
     validatePointsCheck();
 }
 	
-Polygon::Polygon(const int* x, const int* y, const size_t number) {
-   
-    if (number > 0 && (x == nullptr || y == nullptr)) {
-        throw std::invalid_argument("Null pointer passed");
-    }
+Polygon::Polygon(const std::initializer_list<std::pair<int, int>>& coords,
+    unsigned int width, unsigned int height)
+    : screenWidth(width), screenHeight(height) {
 
-    this->points.reserve(number);
-    for (size_t i = 0; i < number; ++i) {
-        points.emplace_back(x[i], y[i]);
-    }
 
+    points.reserve(coords.size());
+    for (const auto& coord : coords) {  
+        points.emplace_back(coord.first,coord.second);
+    }
     validatePointsCheck();
 }
 
@@ -39,7 +61,16 @@ Point Polygon::getPoint(int sequence_number) const {
     }
     return points[sequence_number];
 }
+
+unsigned int Polygon::getScreenWidth() const { return screenWidth; }
+
+unsigned int Polygon::getScreenHeight() const { return screenHeight; }
+
 void Polygon::validatePointsCheck() const {
+
+    if (points.size() < 3) {
+        throw std::invalid_argument("Polygon must have at least 3 vertices");
+    }
     for (size_t i = 1; i < points.size(); ++i) {
         if (points[i] == points[i - 1]) {
             throw std::logic_error("The points match");
@@ -51,11 +82,42 @@ void Polygon::validatePointsCheck() const {
             throw std::logic_error("Three points lie on the same straight line");
         }
     }
+    for (const auto& point : points) {
+        if (point.getX() > screenWidth || point.getY() > screenHeight) {
+            throw std::out_of_range("Vertex coordinates exceed screen bounds");
+        }
+    }
 
 }
 
-void Polygon::ToString() const {
+std::string Polygon::toString() const {
+    std::ostringstream oss;
+    oss << "Polygon[";
     for (size_t i = 0; i < points.size(); ++i) {
-        std::cout << "vertex " << i+1 << ": " << points[i] << "\n";
+        if (i != 0) oss << ", ";
+        oss << points[i];
     }
+    oss << "]";
+    return oss.str();
+}
+
+void Polygon::draw() const {
+    std::cout << "Drawing polygon with vertices:\n";
+    for (const auto& vertex : points) {
+        std::cout << vertex << "\n";
+    }
+}
+
+
+void Polygon::readFromStream(std::istream& is) {
+    points.clear();
+    Point p;
+    while (is >> p) {
+        points.push_back(p);
+    }
+    validatePointsCheck();
+}
+
+void Polygon::writeToStream(std::ostream& os) const {
+    os << toString();
 }
