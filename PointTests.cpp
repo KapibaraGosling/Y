@@ -1,5 +1,5 @@
 ﻿#include <gtest/gtest.h>
-#include "Point.h"
+#include "../GeometryLibrary/Point.h"
 #include <sstream>
 
 TEST(PointTest, DefaultConstruction) {
@@ -42,8 +42,8 @@ TEST(PointTest, AssignmentOperator) {
 TEST(PointTest, CollinearCheck) {
     Point p1(0, 0);
     Point p2(1, 1);
-    Point p3(2, 2);  // Коллинеарны
-    Point p4(0, 1);  // Не коллинеарны
+    Point p3(2, 2); 
+    Point p4(0, 1);  
 
     EXPECT_TRUE(p1.isCollinearWith(p2, p3));
     EXPECT_FALSE(p1.isCollinearWith(p2, p4));

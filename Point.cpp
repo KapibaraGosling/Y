@@ -18,13 +18,12 @@ Point& Point::operator=(const Point& other) {
     return *this;
 }
 
-
 bool Point::isCollinearWith(const Point& p2, const Point& p3) const {
-    double area = (double)(this->x) * (p2.y - p3.y) +
-        (double)(p2.x) * (p3.y - this->y) +
-        (double)(p3.x) * (this->y - p2.y);
+    int area = (this->x) * (p2.y - p3.y) +
+        (p2.x) * (p3.y - this->y) +
+        (p3.x) * (this->y - p2.y);
 
-    return std::abs(area) < std::numeric_limits<double>::epsilon();
+    return area ==0;
 }
 
 std::istream& operator>>(std::istream& is, Point& point) {
@@ -41,9 +40,9 @@ std::istream& operator>>(std::istream& is, Point& point) {
 }
 
 
-std::ostream& operator<<(std::ostream &coutP, const Point& point) {
-    coutP << "(" << point.x << "; " << point.y << ")\n";
-    return coutP;
+std::ostream& operator<<(std::ostream &outP, const Point& point) {
+    outP << "(" << point.x << "; " << point.y << ")\n";
+    return outP;
 }
 
 
