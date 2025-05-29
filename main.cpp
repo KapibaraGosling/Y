@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "../DequeLibrary/Dequeue.h"
 using namespace std;
 int main() {
@@ -24,7 +24,7 @@ int main() {
     cout << "После удаления: " << dq1 << "\n";
 
     Deque<int> dq4 = dq2; // Копирование 
-    Deque<int> dq5 = move(dq2); // Перемещение (оставит dqw пустым)
+    Deque<int> dq5 = move(dq2); // Перемещение (оставит dq2 пустым)
 
     cout << "Размер dq4: " << dq4.size() << "\n";
     cout << "Пуст ли dq5? " << (dq5.empty() ? "Да" : "Нет") << "\n";

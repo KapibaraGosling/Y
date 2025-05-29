@@ -1,9 +1,8 @@
-#include "pch.h"
+п»ї#include "pch.h"
 
 #include "gtest/gtest.h"
 #include "../DequeLibrary/Dequeue.h"
 
-// Тесты для конструкторов
 TEST(DequeTest, DefaultConstructor) {
     Deque<int> dq;
     EXPECT_TRUE(dq.empty());
@@ -17,7 +16,6 @@ TEST(DequeTest, InitializerListConstructor) {
     EXPECT_EQ(dq.back(), 3);
 }
 
-// Тесты для push/pop операций
 TEST(DequeTest, PushFront) {
     Deque<int> dq;
     dq.push_front(1);
@@ -62,7 +60,6 @@ TEST(DequeTest, PopBack) {
     EXPECT_EQ(dq.size(), 1);
 }
 
-// Тесты для edge cases
 TEST(DequeTest, PopEmptyDeque) {
     Deque<int> dq;
     EXPECT_THROW(dq.pop_front(), std::out_of_range);
@@ -75,7 +72,6 @@ TEST(DequeTest, FrontBackEmptyDeque) {
     EXPECT_THROW(dq.back(), std::out_of_range);
 }
 
-// Тесты для оператора доступа
 TEST(DequeTest, OperatorAccess) {
     Deque<int> dq = { 10, 20, 30 };
     EXPECT_EQ(dq[0], 10);
@@ -84,7 +80,6 @@ TEST(DequeTest, OperatorAccess) {
     EXPECT_THROW(dq[3], std::out_of_range);
 }
 
-// Тесты для копирования и перемещения
 TEST(DequeTest, CopyConstructor) {
     Deque<int> dq1 = { 1, 2, 3 };
     Deque<int> dq2(dq1);
@@ -114,7 +109,6 @@ TEST(DequeTest, AssignmentOperator) {
     EXPECT_EQ(dq1.back(), dq2.back());
 }
 
-// Тесты для строкового представления
 TEST(DequeTest, ToString) {
     Deque<int> dq = { 1, 2, 3 };
     EXPECT_EQ(dq.toString(), "[1, 2, 3]");
@@ -123,7 +117,6 @@ TEST(DequeTest, ToString) {
     EXPECT_EQ(str_deque.toString(), "[a, b, c]");
 }
 
-// Тесты для ввода/вывода
 TEST(DequeTest, StreamOutput) {
     Deque<int> dq = { 1, 2, 3 };
     std::ostringstream oss;
@@ -131,7 +124,6 @@ TEST(DequeTest, StreamOutput) {
     EXPECT_EQ(oss.str(), "[1, 2, 3]");
 }
 
-// Комплексный тест
 TEST(DequeTest, ComplexOperations) {
     Deque<int> dq;
     EXPECT_TRUE(dq.empty());
