@@ -1,4 +1,4 @@
-﻿#include "../GeometryLibrary/Polygon.h"
+#include "../GeometryLibrary/Polygon.h"
 #include "../GeometryLibrary/Point.h"
 #include "../GeometryLibrary/Shape.h"
 #include <vector>

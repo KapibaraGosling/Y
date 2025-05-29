@@ -1,4 +1,4 @@
-﻿#include "Point.h"
+#include "Point.h"
 #include <limits>
 bool operator==(const Point& point1, const Point& point2)
 {
