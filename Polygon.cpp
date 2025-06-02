@@ -30,6 +30,7 @@ Polygon& Polygon::operator=(Polygon&& other) noexcept {
     if (this != &other) {
         points = std::move(other.points);
     }
+    other.points=nullptr;
     return *this;
 }
 
