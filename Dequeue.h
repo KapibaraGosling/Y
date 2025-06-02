@@ -199,6 +199,19 @@ public:
         }
         return *this;
     }
+
+
+    /**
+     * @brief Оператор перемещения
+     * @param other Дек для перемещения
+     * @return Ссылка на текущий дек
+     */
+    Deque& operator=(const Deque&& other) {
+        if (this != &other) {
+            swap(*this, temp);
+        }
+        return *this;
+    }
     
     /**
      * @brief Обменивает содержимое двух деков
